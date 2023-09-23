@@ -5,7 +5,7 @@
 
 [My Spigotmc plugins](https://www.spigotmc.org/resources/authors/moruto_.1864989/)
 
-## Use for coding/Stuff
+## Programs i use
 
 [![Editors](https://skillicons.dev/icons?i=vscode,idea,maven,mysql,unity)](https://skillicons.dev)
 

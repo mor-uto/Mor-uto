@@ -1,17 +1,24 @@
-# Portfolio
-# *not finished work in progerss portfolio*
+# About me
 
-## Spigot Plugins i made
+I have been coding for since 2020 im self-taught everything
 
-[My Spigotmc plugins](https://www.spigotmc.org/resources/authors/moruto_.1864989/)
+# IDES / Other Stuff i use for coding
+- IntelliJ ( Plugin developing )
+- MySQL ( Database )
+- Unity ( 3D Game development )
+- Visual Studio Code ( Another coding IDE )
+- Maven ( Compiling )
 
-## Programs i use
-
-[![Editors](https://skillicons.dev/icons?i=vscode,idea,maven,mysql,unity)](https://skillicons.dev)
-
-## Coding languages i use/used before
-
-[![Languages](https://skillicons.dev/icons?i=java,html,css,cs,nodejs,js,python,lua)](https://skillicons.dev)
+# Coding languages i use / used before
+- Java
+- C#
+- JAVASCRIPT
+- LUA
+- HTML
+- CSS
+- NODE.JS
+- PYTHON
 
 ## 📲 Contact me
-### Discord - Moruto_
+### Discord - moruto_
+### Email - morutomc@gmail.com

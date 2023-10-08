@@ -20,5 +20,6 @@ I have been coding for since 2020 im self-taught everything
 - PYTHON
 
 ## 📲 Contact me
-Discord - moruto_
+Discord - inoty. (moruto_ soon)
+
 Email - morutomc@gmail.com

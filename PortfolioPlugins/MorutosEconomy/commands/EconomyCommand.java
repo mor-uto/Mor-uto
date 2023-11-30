@@ -53,59 +53,67 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             }
 
             if (args[0].equalsIgnoreCase("add")) {
-                if (args.length == 3) {
-                    Player target = Bukkit.getPlayer(args[1]);
-                    int depositAmount = Integer.parseInt(args[2]);
+                if (player.hasPermission("economy.add")) {
+                    if (args.length == 3) {
+                        Player target = Bukkit.getPlayer(args[1]);
+                        int depositAmount = Integer.parseInt(args[2]);
 
-                    if (target != null) {
-                        eco.depositPlayer(target, depositAmount);
-                        sendMessageBranded(player, "&7You added &a$" + depositAmount + "&7 to &a" + target.getName() + "&7's account");
+                        if (target != null) {
+                            eco.depositPlayer(target, depositAmount);
+                            sendMessageBranded(player, "&7You added &a$" + depositAmount + "&7 to &a" + target.getName() + "&7's account");
+                        }
                     }
-                }
+                } else sendMessageBranded(player, "You dont have the required permission to use this");
 
                 return true;
             }
 
             if (args[0].equalsIgnoreCase("remove")) {
-                if (args.length == 3) {
-                    Player target = Bukkit.getPlayer(args[1]);
-                    double withdrawAmount = Integer.parseInt(args[2]);
+                if (player.hasPermission("economy.remove")) {
+                    if (args.length == 3) {
+                        Player target = Bukkit.getPlayer(args[1]);
+                        double withdrawAmount = Integer.parseInt(args[2]);
 
-                    if (target != null) {
-                        eco.withdrawPlayer(target, withdrawAmount);
-                        sendMessageBranded(player, "&7You removed &a$" + withdrawAmount + "&7 from &a" + target.getName() + "&7's account");
+                        if (target != null) {
+                            eco.withdrawPlayer(target, withdrawAmount);
+                            sendMessageBranded(player, "&7You removed &a$" + withdrawAmount + "&7 from &a" + target.getName() + "&7's account");
+                        }
                     }
-                }
+                } else sendMessageBranded(player, "You dont have the required permission to use this");
 
-                return true;
+            return true;
             }
 
             if (args[0].equalsIgnoreCase("set")) {
-                if (args.length == 3) {
-                    Player target = Bukkit.getPlayer(args[1]);
-                    int amount = Integer.parseInt(args[2]);
+                if (player.hasPermission("economy.set")) {
+                    if (args.length == 3) {
+                        Player target = Bukkit.getPlayer(args[1]);
+                        int amount = Integer.parseInt(args[2]);
 
-                    if (target != null) {
-                        eco.withdrawPlayer(target, eco.getBalance(player));
-                        eco.depositPlayer(target, amount);
-                        sendMessageBranded(player, "&7You set &a" + target.getName() + "&7 's balance amount to &a$" + amount);
+                        if (target != null) {
+                            eco.withdrawPlayer(target, eco.getBalance(player));
+                            eco.depositPlayer(target, amount);
+                            sendMessageBranded(player, "&7You set &a" + target.getName() + "&7 's balance amount to &a$" + amount);
+                        }
                     }
-                }
+                } else sendMessageBranded(player, "You dont have the required permission to use this");
 
                 return true;
             }
 
             if (args[0].equalsIgnoreCase("balance")) {
-                if (args.length == 2) {
-                    Player target = Bukkit.getPlayer(args[1]);
-                    if (target != null) {
-                        int balance = (int) plugin.economyImplementer.getBalance(target);
-                        sendMessageBranded(player, "&a" + target.getName() + " &7has &a$" + balance);
+                if (player.hasPermission("economy.balance")) {
+                    if (args.length == 2) {
+                        Player target = Bukkit.getPlayer(args[1]);
+                        if (target != null) {
+                            int balance = (int) plugin.economyImplementer.getBalance(target);
+                            sendMessageBranded(player, "&a" + target.getName() + " &7has &a$" + balance);
+                        }
+                    } else {
+                        int balance = (int) plugin.economyImplementer.getBalance(player);
+                        sendMessageBranded(player, "You have &a$" + balance);
                     }
-                } else {
-                    int balance = (int) plugin.economyImplementer.getBalance(player);
-                    sendMessageBranded(player, "You have &a$" + balance);
-                }
+                } else sendMessageBranded(player, "You dont have the required permission to use this");
             }
         }
         return true;

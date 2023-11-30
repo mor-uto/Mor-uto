@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,13 @@ public class EconomyListener implements Listener {
                     MorutosEconomy.getInstance().economyImplementer.depositPlayer((Player) event.getDamager(), amount);
                 }
             }
+        }
+    }
+    
+    @EventHandler
+    private void onPlayerMove(PlayerMoveEvent event) {
+        if (method.contains("moving")) {
+            MorutosEconomy.getInstance().economyImplementer.depositPlayer(event.getPlayer(), amount);
         }
     }
 }

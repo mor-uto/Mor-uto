@@ -1,8 +1,9 @@
 package net.moruto.economy.utils;
 
-import net.moruto.economy.EconomyImplementer;
+import net.moruto.economy.EconomySystem;
 import net.moruto.economy.MorutosEconomy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,12 +21,13 @@ import java.util.UUID;
 
 public class StorageManager implements Listener {
     private final ArrayList<File> dataFiles = new ArrayList<>();
-    public EconomyImplementer eco;
+    public EconomySystem eco;
 
-    public StorageManager(EconomyImplementer eco) {
+    public StorageManager(EconomySystem eco) {
+        MorutosEconomy.getInstance().getServer().getPluginManager().registerEvents(this, MorutosEconomy.getInstance());
+
         this.eco = eco;
 
-        MorutosEconomy.getInstance().getServer().getPluginManager().registerEvents(this, MorutosEconomy.getInstance());
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!eco.hasAccount(player)) {
                 eco.createPlayerAccount(player);
@@ -35,10 +37,13 @@ public class StorageManager implements Listener {
             File file = new File(MorutosEconomy.getInstance().getDataFolder(), "/balances/" + player.getUniqueId() + ".json");
             try {
                 if (!file.exists()) {
+                    new File(MorutosEconomy.getInstance().getDataFolder(), "/balances").mkdir();
                     file.createNewFile();
+
                     FileWriter writer = new FileWriter(file);
                     JSONObject data = new JSONObject();
                     data.put(player.getUniqueId(), eco.getBalance(player.getName()));
+
                     writer.write(data.toJSONString());
                     writer.flush();
                 }
@@ -74,6 +79,7 @@ public class StorageManager implements Listener {
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Something wrong happened while loading the economy data files... please contact the plugin owner");
         }
     }
 
@@ -92,6 +98,7 @@ public class StorageManager implements Listener {
                     writer.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Something wrong happened while saving the economy data files... please contact the plugin owner");
                 }
             }
         }

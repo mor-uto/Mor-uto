@@ -6,17 +6,16 @@ import net.moruto.economy.utils.ConfigManager;
 import net.moruto.economy.utils.StorageManager;
 import net.moruto.economy.utils.VaultHook;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public final class MorutosEconomy extends JavaPlugin {
-    private EconomyListener economy;
     private ConfigManager configManager;
     public HashMap<UUID, Double> playerBank = new HashMap<>();
-    public EconomyImplementer economyImplementer;
-    private StorageManager storageManager;
+    public EconomySystem economyImplementer;
     private final VaultHook vaultHook = new VaultHook();
 
     public static MorutosEconomy getInstance() {
@@ -26,23 +25,23 @@ public final class MorutosEconomy extends JavaPlugin {
     @Override
     public void onEnable() {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-            Bukkit.getConsoleSender().sendMessage("Vault plugin is not installed... its a required dependency");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Vault plugin is not install its a required dependency.");
             return;
         }
 
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
-        economyImplementer = new EconomyImplementer();
-
-        storageManager = new StorageManager(economyImplementer);
+        economyImplementer = new EconomySystem();
+        new StorageManager(economyImplementer);
 
         configManager = new ConfigManager();
-        economy = new EconomyListener();
+        EconomyListener economy = new EconomyListener();
 
         this.vaultHook.hook();
 
         getServer().getPluginManager().registerEvents(economy, this);
+
         EconomyCommand economyCommand = new EconomyCommand();
         getCommand("economy").setExecutor(economyCommand);
         getCommand("balance").setExecutor(economyCommand);

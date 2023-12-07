@@ -1,6 +1,6 @@
 package net.moruto.economy.command;
 
-import net.moruto.economy.EconomyImplementer;
+import net.moruto.economy.EconomySystem;
 import net.moruto.economy.MorutosEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,19 +17,18 @@ import java.util.List;
 
 public class EconomyCommand implements CommandExecutor, TabCompleter {
     private final MorutosEconomy plugin = MorutosEconomy.getInstance();
-    private final EconomyImplementer eco = plugin.economyImplementer;
+    private final EconomySystem eco = plugin.economyImplementer;
 
     private void sendMessageBranded(Player player, String str) {
-        String prefix = "&7[&eEco&6nomy&7] ";
+        String prefix = MorutosEconomy.getInstance().getConfigManager().getPrefix();
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + str));
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
 
-            if (command.getName() == "balance" || command.getAliases().contains("bal")) {
+            if (command.getName().equalsIgnoreCase("balance") || command.getAliases().contains("bal")) {
                 if (args.length == 1) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
@@ -101,6 +100,15 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+            if (args[0].equalsIgnoreCase("reload")) {
+                if (player.hasPermission("economy.reload")) {
+                    MorutosEconomy.getInstance().saveDefaultConfig();
+                    MorutosEconomy.getInstance().getConfig().options().copyDefaults();
+                    MorutosEconomy.getInstance().saveConfig();
+                    sendMessageBranded(player, "&aReloaded the plugin");
+                }  else sendMessageBranded(player, "You dont have the required permission to use this");
+            }
+
             if (args[0].equalsIgnoreCase("balance")) {
                 if (player.hasPermission("economy.balance")) {
                     if (args.length == 2) {
@@ -122,22 +130,26 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         List<String> suggestions = new ArrayList<>();
+        Player player = (Player) commandSender;
 
-        if (args.length == 1) {
-            suggestions.add("balance");
-            suggestions.add("set");
-            suggestions.add("remove");
-            suggestions.add("add");
-        }
-
-        if (args.length == 2) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                suggestions.add(player.getName());
+        if (command.getName().equalsIgnoreCase("economy")) {
+            if (args.length == 1) {
+                suggestions.add(player.hasPermission("economy.balance") ? "balance" : null);
+                suggestions.add(player.hasPermission("economy.set") ? "set" : null);
+                suggestions.add(player.hasPermission("economy.remove") ? "remove" : null);
+                suggestions.add(player.hasPermission("economy.add") ? "add" : null);
+                suggestions.add(player.hasPermission("economy.reload") ? "reload" : null);
             }
-        }
 
-        if (args.length == 3) {
-            suggestions.add("amount");
+            if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
+                for (Player playerr : Bukkit.getOnlinePlayers()) {
+                    suggestions.add(playerr.getName());
+                }
+            }
+
+            if (args.length == 3 && !args[0].equalsIgnoreCase("balance") && !args[0].equalsIgnoreCase("reload")) {
+                suggestions.add("amount");
+            }
         }
 
         return suggestions;

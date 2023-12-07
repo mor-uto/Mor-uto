@@ -21,5 +21,3 @@ I have been coding for since 2020 im self-taught everything
 
 ## 📲 Contact me
 Discord - moruto_
-
-Email - morutomc@gmail.com

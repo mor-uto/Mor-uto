@@ -39,11 +39,12 @@ public final class AntiEctasy extends JavaPlugin {
     }
 
     private void sendStartup() {
-        Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&b-&3-&9-".repeat(15)));
+        Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&b--&3--&9--".repeat(7)));
+        Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&6" + getDescription().getName()));        
         Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&bMorutos&9Productions"));
         Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&9Discord: moruto_"));
         Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("Version: " + getDescription().getVersion()));
-        Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&b-&3-&9-".repeat(15)));
+        Bukkit.getServer().getConsoleSender().sendMessage(Helper.trans("&b--&3--&9--".repeat(7)));
     }
 
     public JarFileChecker getJarFileChecker() {

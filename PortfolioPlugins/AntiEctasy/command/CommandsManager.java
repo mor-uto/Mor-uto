@@ -42,7 +42,7 @@ public class CommandsManager implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (args.length == 2 && !args[0].equalsIgnoreCase("support")) {
+        if (args.length == 1 && !args[0].equalsIgnoreCase("support")) {
             Helper.sendMsg(commandSender, "&c/AntiEctasy <Command> <Argument>");
             return true;
         }

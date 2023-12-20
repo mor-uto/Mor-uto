@@ -1,16 +1,26 @@
 package net.moruto.economy.database;
 
+import net.moruto.economy.MorutosEconomy;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class MySQL {
     private Connection connection;
+    private final String host, port, database, username, password;
+
+    public MySQL() {
+        host = MorutosEconomy.getInstance().getConfigManager().getHost();
+        port = MorutosEconomy.getInstance().getConfigManager().getPort();
+        database = MorutosEconomy.getInstance().getConfigManager().getDatabase();
+        username = MorutosEconomy.getInstance().getConfigManager().getUsername();
+        password = MorutosEconomy.getInstance().getConfigManager().getPassword();
+    }
 
     public void connect() {
         if (!isConnected()) {
             try {
-                final String host = "localhost", port = "3306", database = "normalDatabase", username = "Moruto", password = "whatever";
                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
 
                 try (PreparedStatement statement = connection.prepareStatement(
@@ -19,6 +29,7 @@ public class MySQL {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+                System.err.println("Error connecting to MySQL: " + e.getMessage());
             }
         }
     }
@@ -38,6 +49,8 @@ public class MySQL {
     }
 
     public void savePlayerData(HashMap<UUID, Double> playerData) {
+        if (!isConnected()) connect();
+
         try {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO player_data (uuid, balance) VALUES (?, ?) ON DUPLICATE KEY UPDATE balance = VALUES(balance)")) {
@@ -56,6 +69,8 @@ public class MySQL {
     }
 
     public HashMap<UUID, Double> loadPlayerData() {
+        if (!isConnected()) connect();
+
         HashMap<UUID, Double> playerData = new HashMap<>();
 
         try {

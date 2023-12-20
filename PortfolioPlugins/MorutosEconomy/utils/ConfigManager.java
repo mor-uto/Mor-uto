@@ -7,15 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigManager {
-    private final FileConfiguration config = MorutosEconomy.getInstance().getConfig();
-    
+
     private final List<String> method;
     private final List<String> workingWorlds;
     private final double perBlockAmount, perBlockWalkAmount, perMobkillAmount;
+    private final String host, port, database, username, password;
     private final String prefix, dbMethod;
     private final boolean usePrefix;
 
     public ConfigManager() {
+        FileConfiguration config = MorutosEconomy.getInstance().getConfig();
         String methodsBase = config.getString("moneyMethod");
         String workingWorldsBase = config.getString("workingWorlds");
 
@@ -32,6 +33,12 @@ public class ConfigManager {
         perMobkillAmount = config.getDouble("moneyPerMobKilled");
     
         dbMethod = config.getString("databaseMethod");
+
+        host = config.getString("host");
+        port = config.getString("port");
+        database = config.getString("database");
+        username = config.getString("username");
+        password = config.getString("password");
     }
 
     public List<String> getMethod() {
@@ -58,5 +65,26 @@ public class ConfigManager {
 
     public String getDbMethod() {
         return dbMethod;
+    }
+
+    //MySQL stuff
+    public String getHost() {
+        return host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

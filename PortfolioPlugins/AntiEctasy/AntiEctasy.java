@@ -1,9 +1,11 @@
 package net.moruto.antiectasy;
 
+import net.moruto.antiectasy.command.CommandsManager;
 import net.moruto.antiectasy.tools.Disinfector;
 import net.moruto.antiectasy.utils.ConfigManager;
 import net.moruto.antiectasy.tools.JarFileChecker;
 import net.moruto.antiectasy.utils.Helper;
+import net.moruto.antiectasy.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,19 +23,19 @@ public final class AntiEctasy extends JavaPlugin {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
+        sendStartup();
+
         configManager = new ConfigManager();
         jarFileChecker = new JarFileChecker();
         disinfector = new Disinfector();
-        new MainCommand();
-        sendStartup();
+
+        new CommandsManager();
+
+        new Metrics(this, 20521);
     }
 
     public ConfigManager getConfigManager() {
         return configManager;
-    }
-
-    public String getPrefix() {
-        return "&7[&bAnti&9Ectasy&7]&r";
     }
 
     private void sendStartup() {

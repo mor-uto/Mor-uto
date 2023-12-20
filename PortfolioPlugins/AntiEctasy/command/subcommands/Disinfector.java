@@ -34,6 +34,8 @@ public class Disinfector extends SubCommand {
                     sendMsg(commandSender, "&cSomething wrong happened while trying to disinfect " + targetPlugin.getName());
                 }*/
             }
+        } else {
+            Helper.sendMsg(sender, "&c/AntiEctasy disinfect <Plugin/All>");
         }
     }
 }

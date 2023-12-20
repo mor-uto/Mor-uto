@@ -27,7 +27,7 @@ public final class MorutosEconomy extends JavaPlugin {
     @Override
     public void onEnable() {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Vault plugin is not install its a required dependency.");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Vault plugin is not installed; it's a required dependency.");
             return;
         }
 
@@ -42,11 +42,12 @@ public final class MorutosEconomy extends JavaPlugin {
         if (configManager.getDbMethod().equalsIgnoreCase("mysql")) {
             mySQL = new MySQL();
             mySQL.connect();
-            playerBank = mySQL.loadPlayerData();
-        } {
+            if (mySQL.isConnected()) {
+                playerBank = mySQL.loadPlayerData();
+            }
+        } else {
             new LocalDatabase(economyImplementer);
         }
-
 
         this.vaultHook.hook();
 

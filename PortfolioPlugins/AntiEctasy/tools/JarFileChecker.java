@@ -42,7 +42,7 @@ public class JarFileChecker {
     }
 
     private void sendMsg(CommandSender commandSender, String str) {
-        String prefix = AntiEctasy.getInstance().getPrefix();
+        String prefix = AntiEctasy.getInstance().getConfigManager().getPrefix();
         commandSender.sendMessage(Helper.trans(prefix + " " + str));
     }
 

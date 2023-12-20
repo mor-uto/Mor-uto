@@ -28,22 +28,16 @@ public class JarFileChecker {
                     if (className.equalsIgnoreCase(targetClassName)) {
                         if (plugin.isEnabled()) Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                         deleteBungee();
-                        break;
+                        return true;
                     }
                 }
             }
             jarFile.close();
-
-            return true;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private void sendMsg(CommandSender commandSender, String str) {
-        String prefix = AntiEctasy.getInstance().getConfigManager().getPrefix();
-        commandSender.sendMessage(Helper.trans(prefix + " " + str));
     }
 
     private void deleteBungee() {

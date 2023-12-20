@@ -2,8 +2,9 @@ package net.moruto.economy;
 
 import net.moruto.economy.command.EconomyCommand;
 import net.moruto.economy.listeners.EconomyListener;
+import net.moruto.economy.database.MySQL;
 import net.moruto.economy.utils.ConfigManager;
-import net.moruto.economy.utils.StorageManager;
+import net.moruto.economy.database.LocalDatabase;
 import net.moruto.economy.utils.VaultHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,10 +34,16 @@ public final class MorutosEconomy extends JavaPlugin {
         saveDefaultConfig();
 
         economyImplementer = new EconomySystem();
-        new StorageManager(economyImplementer);
 
         configManager = new ConfigManager();
         EconomyListener economy = new EconomyListener();
+
+        if (configManager.getDbMethod().equalsIgnoreCase("mysql")) {
+            new MySQL();
+        } {
+            new LocalDatabase(economyImplementer);
+        }
+
 
         this.vaultHook.hook();
 

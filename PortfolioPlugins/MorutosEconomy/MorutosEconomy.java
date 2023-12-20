@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public final class MorutosEconomy extends JavaPlugin {
     private ConfigManager configManager;
+    private MySQL mySQL;
     public HashMap<UUID, Double> playerBank = new HashMap<>();
     public EconomySystem economyImplementer;
     private final VaultHook vaultHook = new VaultHook();
@@ -39,7 +40,9 @@ public final class MorutosEconomy extends JavaPlugin {
         EconomyListener economy = new EconomyListener();
 
         if (configManager.getDbMethod().equalsIgnoreCase("mysql")) {
-            new MySQL();
+            mySQL = new MySQL();
+            mySQL.connect();
+            playerBank = mySQL.loadPlayerData();
         } {
             new LocalDatabase(economyImplementer);
         }
@@ -57,6 +60,10 @@ public final class MorutosEconomy extends JavaPlugin {
     @Override
     public void onDisable() {
         this.vaultHook.unhook();
+        if (mySQL != null && mySQL.isConnected()){
+            mySQL.savePlayerData(playerBank);
+            mySQL.disconnect();
+        }
     }
 
     public ConfigManager getConfigManager() {

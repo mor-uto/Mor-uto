@@ -76,6 +76,7 @@ public class CommandsManager implements CommandExecutor, TabCompleter {
             if (args[0].equalsIgnoreCase("scan") || args[0].equalsIgnoreCase("disinfect")) {
                 for (Plugin plugin : Bukkit.getServer().getPluginManager().getPlugins()) {
                     suggestions.add(plugin.getName());
+                    suggestions.add("all");
                 }
             }
         }

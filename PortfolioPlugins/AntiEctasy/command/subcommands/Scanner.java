@@ -19,28 +19,41 @@ public class Scanner extends SubCommand {
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 2) {
             String pluginName = args[1];
-            Plugin targetPlugin = Bukkit.getPluginManager().getPlugin(pluginName);
 
-            if (targetPlugin != null) {
-                File pluginFile = Helper.getPluginFile(targetPlugin, sender);
-
-                JarFileChecker checker = AntiEctasy.getInstance().getJarFileChecker();
-                boolean check = checker.check(pluginFile, targetPlugin);
-
-                if (check) {
-                    Helper.sendMsg(sender, "&c" + targetPlugin.getName() + " is infected with ectasy");
-                    Helper.sendMsg(sender, "&cDisabling " + targetPlugin.getName() + " for protection");
-                    if (AntiEctasy.getInstance().getConfigManager().isDisableInfectedPlugins()) {
-                        Bukkit.getPluginManager().disablePlugin(targetPlugin);
+            if (pluginName.equalsIgnoreCase("all")) {
+                for (Plugin plugin : Bukkit.getServer().getPluginManager().getPlugins()) {
+                    if (!plugin.getName().equalsIgnoreCase(AntiEctasy.getInstance().getDescription().getName())) {
+                        check(plugin.getName(), sender);
                     }
-                } else {
-                    Helper.sendMsg(sender, "&a" + targetPlugin.getName() + " is not infected");
                 }
             } else {
-                Helper.sendMsg(sender, "&cThis plugin doesnt exist");
+                check(pluginName, sender);
             }
         } else {
-            Helper.sendMsg(sender, "&c/AntiEctasy scan <Plugin>");
+            Helper.sendMsg(sender, "&c/AntiEctasy scan <Plugin/All>");
+        }
+    }
+
+    private void check(String pluginName, CommandSender sender) {
+        Plugin targetPlugin = Bukkit.getPluginManager().getPlugin(pluginName);
+
+        if (targetPlugin != null) {
+            File pluginFile = Helper.getPluginFile(targetPlugin, sender);
+
+            JarFileChecker checker = AntiEctasy.getInstance().getJarFileChecker();
+            boolean check = checker.check(pluginFile, targetPlugin);
+
+            if (check) {
+                Helper.sendMsg(sender, "&c" + targetPlugin.getName() + " is infected with ectasy");
+                Helper.sendMsg(sender, "&cDisabling " + targetPlugin.getName() + " for protection");
+                if (AntiEctasy.getInstance().getConfigManager().isDisableInfectedPlugins()) {
+                    Bukkit.getPluginManager().disablePlugin(targetPlugin);
+                }
+            } else {
+                Helper.sendMsg(sender, "&a" + targetPlugin.getName() + " is not infected");
+            }
+        } else {
+            Helper.sendMsg(sender, "&cThis plugin doesnt exist");
         }
     }
 }

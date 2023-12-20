@@ -26,7 +26,7 @@ public class JarFileChecker {
                     String className = entry.getName().replaceAll("/", ".").substring(0, entry.getName().length() - 6);
 
                     if (className.equalsIgnoreCase(targetClassName)) {
-                        Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+                        if (plugin.isEnabled()) Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                         deleteBungee();
                         break;
                     }

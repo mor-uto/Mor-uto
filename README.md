@@ -1,2 +1,2 @@
 ## About me
-[check me out](https://sites.google.com/view/moruto/)
+[check me out](https://moruto.rf.gd/)
